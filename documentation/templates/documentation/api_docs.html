@@ -1,0 +1,110 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+<h1 class="page-title">API Documentation</h1>
+
+<div style="margin-bottom: 2rem;">
+    <form method="get" style="display: flex; gap: 1rem; align-items: center;">
+        <div>
+            <label for="app" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filter by App:</label>
+            <select name="app" id="app" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">All Apps</option>
+                {% for app in apps %}
+                <option value="{{ app }}" {% if selected_app == app %}selected{% endif %}>{{ app|title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div>
+            <label for="type" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filter by Type:</label>
+            <select name="type" id="type" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">All Types</option>
+                <option value="rest" {% if selected_type == 'rest' %}selected{% endif %}>REST API</option>
+                <option value="soap" {% if selected_type == 'soap' %}selected{% endif %}>SOAP API</option>
+            </select>
+        </div>
+        
+        <div style="align-self: flex-end;">
+            <button type="submit" class="btn">Filter</button>
+        </div>
+    </form>
+</div>
+
+{% if endpoints %}
+<div class="alert alert-info">
+    Found <strong>{{ endpoints|length }}</strong> endpoint(s)
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Endpoint Name</th>
+            <th>App</th>
+            <th>Type</th>
+            <th>URL Path</th>
+            <th>Method</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for endpoint in endpoints %}
+        <tr>
+            <td><strong>{{ endpoint.name }}</strong></td>
+            <td><span class="badge badge-app">{{ endpoint.app|title }}</span></td>
+            <td>
+                {% if endpoint.api_type == 'rest' %}
+                <span class="badge badge-rest">REST</span>
+                {% else %}
+                <span class="badge badge-soap">SOAP</span>
+                {% endif %}
+            </td>
+            <td><code>{{ endpoint.url_path }}</code></td>
+            <td>
+                {% if endpoint.http_method %}
+                <span class="badge" style="background: #6366f1; color: white;">{{ endpoint.http_method }}</span>
+                {% else %}
+                <span style="color: #999;">N/A</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'documentation:api-detail' endpoint.id %}" style="color: #667eea; text-decoration: none;">View Details →</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-warning">
+    <strong>No endpoints found.</strong><br>
+    Try adjusting your filters or add endpoints via the admin panel.
+</div>
+{% endif %}
+
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea;">API Base URLs</h2>
+    <div class="card">
+        <h3>REST APIs</h3>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin: 0.5rem 0;"><code>/products/api/</code> - Products API</li>
+            <li style="margin: 0.5rem 0;"><code>/orders/api/</code> - Orders API</li>
+            <li style="margin: 0.5rem 0;"><code>/logistics/api/</code> - Logistics API</li>
+            <li style="margin: 0.5rem 0;"><code>/finance/api/</code> - Finance API</li>
+            <li style="margin: 0.5rem 0;"><code>/promotions/api/</code> - Promotions API</li>
+            <li style="margin: 0.5rem 0;"><code>/analytics/api/</code> - Analytics API</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h3>SOAP APIs</h3>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin: 0.5rem 0;"><code>/products/soap/</code> - Products SOAP Service</li>
+            <li style="margin: 0.5rem 0;"><code>/orders/soap/</code> - Orders SOAP Service</li>
+            <li style="margin: 0.5rem 0;"><code>/logistics/soap/</code> - Logistics SOAP Service</li>
+            <li style="margin: 0.5rem 0;"><code>/finance/soap/</code> - Finance SOAP Service</li>
+            <li style="margin: 0.5rem 0;"><code>/promotions/soap/</code> - Promotions SOAP Service</li>
+            <li style="margin: 0.5rem 0;"><code>/analytics/soap/</code> - Analytics SOAP Service</li>
+        </ul>
+        <p style="margin-top: 1rem;"><strong>Note:</strong> WSDL available at <code>/app/soap/wsdl/</code></p>
+    </div>
+</section>
+{% endblock %}

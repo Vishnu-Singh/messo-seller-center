@@ -1,0 +1,24 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+<h1 class="page-title">Frequently Asked Questions</h1>
+
+{% if faq_categories %}
+    {% for category, faqs in faq_categories.items %}
+    <section style="margin-top: 2rem;">
+        <h2 style="color: #667eea;">{{ category }}</h2>
+        {% for faq in faqs %}
+        <div class="card">
+            <h3 style="color: #764ba2;">Q: {{ faq.question }}</h3>
+            <p style="margin-top: 1rem;"><strong>A:</strong> {{ faq.answer }}</p>
+        </div>
+        {% endfor %}
+    </section>
+    {% endfor %}
+{% else %}
+<div class="alert alert-warning">
+    <strong>No FAQs available yet.</strong><br>
+    Check back later or contact support for assistance.
+</div>
+{% endif %}
+{% endblock %}

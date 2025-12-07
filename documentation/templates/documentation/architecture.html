@@ -1,0 +1,80 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+<h1 class="page-title">System Architecture</h1>
+
+<div class="alert alert-info">
+    <strong>🏗️ Technical Architecture Overview</strong><br>
+    Learn about the system design, patterns, and technical decisions behind the Messo Seller Center.
+</div>
+
+{% if architecture_content %}
+<div class="card" style="background: white;">
+    {{ architecture_content|safe }}
+</div>
+{% else %}
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea;">Project Structure</h2>
+    <div class="card">
+        <pre><code>messo-seller-center/
+├── manage.py
+├── requirements.txt
+├── messo_seller_center/       # Main project settings
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── products/                   # Products app
+├── orders/                     # Orders app
+├── logistics/                  # Logistics app
+├── finance/                    # Finance app
+├── promotions/                 # Promotions app
+├── analytics/                  # Analytics app
+└── documentation/              # Documentation app</code></pre>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea;">Technology Stack</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Backend</h3>
+            <ul>
+                <li>Django 6.0</li>
+                <li>Django REST Framework 3.16</li>
+                <li>Python 3.12</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Database</h3>
+            <ul>
+                <li>SQLite (Development)</li>
+                <li>PostgreSQL (Production Ready)</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>APIs</h3>
+            <ul>
+                <li>REST (JSON)</li>
+                <li>SOAP (XML)</li>
+                <li>WSDL Definitions</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea;">App Structure</h2>
+    <p>Each Django app follows a consistent structure:</p>
+    <div class="card">
+        <ul>
+            <li><strong>models.py</strong> - Database models</li>
+            <li><strong>serializers.py</strong> - REST API serializers</li>
+            <li><strong>views.py</strong> - REST API ViewSets</li>
+            <li><strong>soap_services.py</strong> - SOAP service handlers</li>
+            <li><strong>urls.py</strong> - URL routing configuration</li>
+            <li><strong>admin.py</strong> - Django admin configuration</li>
+        </ul>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

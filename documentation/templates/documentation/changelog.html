@@ -1,0 +1,84 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+<h1 class="page-title">API Change Log</h1>
+
+<div style="margin-bottom: 2rem;">
+    <form method="get" style="display: flex; gap: 1rem; align-items: center;">
+        <div>
+            <label for="version" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filter by Version:</label>
+            <select name="version" id="version" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">All Versions</option>
+                {% for version in versions %}
+                <option value="{{ version }}">v{{ version }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="align-self: flex-end;">
+            <button type="submit" class="btn">Filter</button>
+        </div>
+    </form>
+</div>
+
+{% if changes %}
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Endpoint</th>
+            <th>Change Type</th>
+            <th>Version</th>
+            <th>Description</th>
+            <th>Changed By</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for change in changes %}
+        <tr>
+            <td>{{ change.changed_at|date:"Y-m-d H:i" }}</td>
+            <td>
+                {% if change.endpoint %}
+                <a href="{% url 'documentation:api-detail' change.endpoint.id %}" style="color: #667eea;">
+                    {{ change.endpoint.name }}
+                </a>
+                {% else %}
+                General
+                {% endif %}
+            </td>
+            <td>
+                <span class="badge" style="background: #3b82f6;">{{ change.change_type|title }}</span>
+                {% if change.breaking_change %}
+                <span class="badge" style="background: #ef4444; color: white;">Breaking Change</span>
+                {% endif %}
+            </td>
+            <td><strong>v{{ change.version }}</strong></td>
+            <td>{{ change.description }}</td>
+            <td>{{ change.changed_by|default:"System" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if is_paginated %}
+<div style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem;">
+    {% if page_obj.has_previous %}
+    <a href="?page=1" class="btn">First</a>
+    <a href="?page={{ page_obj.previous_page_number }}" class="btn">Previous</a>
+    {% endif %}
+    
+    <span style="align-self: center;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="btn">Next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}" class="btn">Last</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<div class="alert alert-warning">
+    <strong>No changes recorded yet.</strong><br>
+    Changes will appear here as the API evolves.
+</div>
+{% endif %}
+{% endblock %}
