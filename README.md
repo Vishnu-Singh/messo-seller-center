@@ -4,19 +4,21 @@ A full-fledged Django project for Messo Seller Center APIs with both REST and SO
 
 ## Features
 
-- **6 Django Apps** organized by API classification:
+- **7 Django Apps** organized by API classification:
   - **Products** - Product management, catalog, and inventory
   - **Orders** - Order processing, fulfillment, and tracking
   - **Logistics** - Shipping, delivery, and warehouse management
   - **Finance** - Payments, invoices, and settlements
   - **Promotions** - Discounts, campaigns, and vouchers
   - **Analytics** - Reports, statistics, and insights
+  - **Documentation** - Web-based documentation interface
 
 - **Dual API Support**: Each app provides both REST and SOAP APIs
 - **Django REST Framework** for REST APIs
-- **Spyne** for SOAP services
+- **Custom SOAP Services** with XML handlers
 - **Comprehensive Models** for all business entities
-- **Detailed API Documentation** at root endpoint
+- **Web-Based Documentation** at `/docs/`
+- **Interactive Admin Panel** for managing all data
 
 ## Installation
 
@@ -40,25 +42,40 @@ pip install -r requirements.txt
 
 3. Run migrations:
 ```bash
-python manage.py makemigrations
 python manage.py migrate
 ```
 
-4. Create a superuser (optional):
+4. Populate documentation (optional):
+```bash
+python manage.py populate_docs
+```
+
+5. Create a superuser (optional):
 ```bash
 python manage.py createsuperuser
 ```
 
-5. Run the development server:
+6. Run the development server:
 ```bash
 python manage.py runserver
 ```
 
 The server will start at `http://127.0.0.1:8000/`
 
-## API Documentation
+## Documentation
 
-Visit `http://127.0.0.1:8000/` to see the complete API documentation.
+### Web-Based Documentation
+Visit `http://127.0.0.1:8000/docs/` for the interactive documentation interface featuring:
+- 📚 **Homepage** - Project overview with statistics
+- 🔍 **API Docs** - Searchable catalog of all endpoints
+- 📝 **Changelog** - Version history and API changes
+- 📖 **Setup Guide** - Installation and configuration
+- 🧪 **Testing Guide** - API testing examples
+- 🏗️ **Architecture** - System design documentation
+- ❓ **FAQ** - Frequently asked questions
+
+### API Root
+Visit `http://127.0.0.1:8000/` to see the API root with quick links.
 
 ### REST API Endpoints
 
