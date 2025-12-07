@@ -63,6 +63,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', api_root, name='api-root'),
     
+    # Documentation
+    path('docs/', include('documentation.urls')),
+    
     # App-specific URLs (REST and SOAP)
     path('products/', include('products.urls')),
     path('orders/', include('orders.urls')),

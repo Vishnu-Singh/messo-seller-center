@@ -1,0 +1,83 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+<h1 class="page-title">Setup Guide</h1>
+
+<div class="alert alert-info">
+    <strong>📋 Complete Setup Instructions</strong><br>
+    Follow these steps to set up and run the Messo Seller Center project.
+</div>
+
+{% if guides %}
+<section style="margin-top: 2rem;">
+    {% for guide in guides %}
+    <div class="card">
+        <h2 style="color: #667eea;">{{ guide.title }}</h2>
+        <span class="badge" style="background: #8b5cf6; color: white;">{{ guide.guide_type|title }}</span>
+        <div style="margin-top: 1rem;">
+            {{ guide.content|safe }}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% endif %}
+
+{% if readme_content %}
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea;">README Documentation</h2>
+    <div class="card">
+        {{ readme_content|safe }}
+    </div>
+</section>
+{% endif %}
+
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea;">Quick Start</h2>
+    
+    <div class="card">
+        <h3>1. Prerequisites</h3>
+        <ul>
+            <li>Python 3.8 or higher</li>
+            <li>pip package manager</li>
+            <li>Git (for version control)</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h3>2. Installation</h3>
+        <pre><code># Clone the repository
+git clone https://github.com/Vishnu-Singh/messo-seller-center.git
+cd messo-seller-center
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run migrations
+python manage.py migrate
+
+# Create superuser (optional)
+python manage.py createsuperuser
+
+# Start development server
+python manage.py runserver</code></pre>
+    </div>
+    
+    <div class="card">
+        <h3>3. Access the Application</h3>
+        <ul>
+            <li><strong>Documentation:</strong> <code>http://localhost:8000/docs/</code></li>
+            <li><strong>Admin Panel:</strong> <code>http://localhost:8000/admin/</code></li>
+            <li><strong>API Root:</strong> <code>http://localhost:8000/</code></li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h3>4. Environment Variables (Production)</h3>
+        <p>Create a <code>.env</code> file with the following variables:</p>
+        <pre><code>SECRET_KEY=your-secret-key-here
+DEBUG=False
+ALLOWED_HOSTS=your-domain.com
+DATABASE_URL=postgresql://user:password@localhost/dbname</code></pre>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+<h1 class="page-title">Welcome to Messo Seller Center Documentation</h1>
+
+<div class="alert alert-info">
+    <strong>📖 Complete API Documentation</strong><br>
+    This documentation provides comprehensive information about project setup, API endpoints, 
+    and change tracking for the Messo Seller Center platform.
+</div>
+
+<div class="grid">
+    <div class="stat-card">
+        <h3>{{ endpoint_count }}</h3>
+        <p>API Endpoints</p>
+    </div>
+    <div class="stat-card">
+        <h3>6</h3>
+        <p>Django Apps</p>
+    </div>
+    <div class="stat-card">
+        <h3>2</h3>
+        <p>API Types (REST + SOAP)</p>
+    </div>
+</div>
+
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea; margin-bottom: 1rem;">🚀 Quick Start</h2>
+    <div class="card">
+        <h3>1. Installation</h3>
+        <pre><code>pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver</code></pre>
+    </div>
+    
+    <div class="card">
+        <h3>2. Access Documentation</h3>
+        <p>Visit <code>http://localhost:8000/docs/</code> to view this documentation</p>
+        <p>Access the admin panel at <code>http://localhost:8000/admin/</code></p>
+    </div>
+    
+    <div class="card">
+        <h3>3. Explore APIs</h3>
+        <p>Browse all API endpoints in the <a href="{% url 'documentation:api-docs' %}">API Documentation</a> section</p>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea; margin-bottom: 1rem;">📦 Available Apps</h2>
+    <div class="grid">
+        {% for app in apps %}
+        <div class="card">
+            <h3>{{ app|title }}</h3>
+            <p>
+                <a href="{% url 'documentation:api-docs' %}?app={{ app }}" class="btn" style="font-size: 0.875rem; padding: 0.5rem 1rem;">View APIs →</a>
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% if recent_changes %}
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea; margin-bottom: 1rem;">📝 Recent Changes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Endpoint</th>
+                <th>Change Type</th>
+                <th>Version</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for change in recent_changes %}
+            <tr>
+                <td>{{ change.changed_at|date:"Y-m-d" }}</td>
+                <td>{{ change.endpoint.name|default:"General" }}</td>
+                <td>
+                    <span class="badge" style="background: #3b82f6;">{{ change.change_type|title }}</span>
+                    {% if change.breaking_change %}
+                    <span class="badge" style="background: #ef4444;">Breaking</span>
+                    {% endif %}
+                </td>
+                <td>v{{ change.version }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'documentation:changelog' %}" class="btn">View All Changes →</a>
+</section>
+{% endif %}
+
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea; margin-bottom: 1rem;">📚 Documentation Sections</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Setup Guide</h3>
+            <p>Installation, configuration, and deployment instructions</p>
+            <a href="{% url 'documentation:setup' %}">Read More →</a>
+        </div>
+        <div class="card">
+            <h3>API Documentation</h3>
+            <p>Complete reference for all REST and SOAP endpoints</p>
+            <a href="{% url 'documentation:api-docs' %}">Browse APIs →</a>
+        </div>
+        <div class="card">
+            <h3>Testing Guide</h3>
+            <p>Learn how to test the APIs with examples</p>
+            <a href="{% url 'documentation:testing' %}">View Examples →</a>
+        </div>
+        <div class="card">
+            <h3>Architecture</h3>
+            <p>System design, patterns, and technical details</p>
+            <a href="{% url 'documentation:architecture' %}">Learn More →</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'documentation/base.html' %}
+
+{% block content %}
+<h1 class="page-title">API Testing Guide</h1>
+
+<div class="alert alert-info">
+    <strong>🧪 Learn How to Test the APIs</strong><br>
+    This guide provides examples and best practices for testing both REST and SOAP APIs.
+</div>
+
+{% if testing_content %}
+<div class="card" style="background: white;">
+    {{ testing_content|safe }}
+</div>
+{% else %}
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea;">REST API Testing</h2>
+    
+    <div class="card">
+        <h3>Using cURL</h3>
+        <pre><code># List all products
+curl -X GET http://localhost:8000/products/api/products/
+
+# Create a product
+curl -X POST http://localhost:8000/products/api/products/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "product_id": "PROD001",
+    "name": "Sample Product",
+    "sku": "SKU001",
+    "price": "99.99",
+    "stock_quantity": 100
+  }'</code></pre>
+    </div>
+    
+    <div class="card">
+        <h3>Using Python Requests</h3>
+        <pre><code>import requests
+
+# GET request
+response = requests.get('http://localhost:8000/products/api/products/')
+print(response.json())
+
+# POST request
+data = {
+    'product_id': 'PROD001',
+    'name': 'Sample Product',
+    'sku': 'SKU001',
+    'price': '99.99',
+    'stock_quantity': 100
+}
+response = requests.post('http://localhost:8000/products/api/products/', json=data)
+print(response.json())</code></pre>
+    </div>
+</section>
+
+<section style="margin-top: 2rem;">
+    <h2 style="color: #667eea;">SOAP API Testing</h2>
+    
+    <div class="card">
+        <h3>Using cURL</h3>
+        <pre><code>curl -X POST http://localhost:8000/products/soap/ \
+  -H "Content-Type: text/xml" \
+  -d '&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;soap:Body&gt;
+    &lt;get_product&gt;
+      &lt;product_id&gt;PROD001&lt;/product_id&gt;
+    &lt;/get_product&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;'</code></pre>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
